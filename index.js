@@ -1,18 +1,13 @@
-const express = require('express')
-
-// adding requirement for cors
-const cors = require('cors')
-
-// adding requirement for dotenv
-require('dotenv').config()
-
-// adding requirement for mongoDB
-const MongoClient = require('mongodb').MongoClient;
-
+// adding require
+const express = require('express')  // for express
+const cors = require('cors')    // for cors
+require('dotenv').config()  // for dotenv
+const MongoClient = require('mongodb').MongoClient; // for mongoDB
 
 // for setting the port for live hosting and localhost 
 const port = process.env.PORT || 5055;
 
+// 
 const app = express()
 
 // adding middle wire
@@ -28,11 +23,27 @@ client.connect(err => {
     // collection for services
     const servicesCollection = client.db("smartAssistanceDB").collection("services");
 
+    // collection for reviews
+    const reviewsCollection = client.db("smartAssistanceDB").collection("reviews");
+
     // test data
     // const newData = {"name":"test one"};
-    // servicesCollection.insertOne(newData)
+    // reviewsCollection.insertOne(newData)
     //     .then(result => { console.log(`Successfully inserted item with _id: ${result.insertedId}`)})
     //     .then(error => { if(error) {console.log(`Failed to insert item: ${error}`)} })
+
+
+    // sending review to server
+    app.post('/addReview', (req, res) => {
+        const newReview = req.body;
+        console.log(newReview);
+        reviewsCollection.insertOne(newReview)
+        .then(result => {
+            console.log(`Successfully inserted review with _id: ${result.insertedId}`)
+            res.send(result.insertedId > 0)
+        })
+        .catch(err => { console.error(`Failed to insert item: ${err}`) })
+    })
 
     //end
     if(err) { console.log("connection error: ", err); }
