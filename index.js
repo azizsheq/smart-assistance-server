@@ -3,6 +3,8 @@ const express = require('express')  // for express
 const cors = require('cors')    // for cors
 require('dotenv').config()  // for dotenv
 const MongoClient = require('mongodb').MongoClient; // for mongoDB
+const ObjectId = require('mongodb').ObjectId; // for fetching specific object from mongoDB
+
 
 // for setting the port for live hosting and localhost 
 const port = process.env.PORT || 5055;
@@ -33,7 +35,68 @@ client.connect(err => {
     //     .then(error => { if(error) {console.log(`Failed to insert item: ${error}`)} })
 
 
-    // sending review to server
+    // getting all services from server
+    app.get('/getServices', (req, res) => {
+        servicesCollection.find()
+            .toArray((err, products) => {
+                res.send(products)
+            })
+    })
+
+
+    // getting specific user clicked service from server
+    app.get('/getService/:id', (req, res) => {
+        const id = ObjectId(req.params.id);
+        servicesCollection.findOne({ _id: id })
+            .then(documents => {
+                // console.log(documents);
+                res.send(documents);
+            })
+    })
+
+
+    // adding a service to server
+    app.post('/addService', (req, res) => {
+        const newService = req.body;
+        // console.log("New Product:", newProduct);
+        servicesCollection.insertOne(newService)
+            .then(result => {
+                console.log(`Successfully add service with _id: ${result.insertedId}`)
+                res.send(result.insertedId > 0)
+            })
+            .catch(err => { console.error(`Failed to add service: ${err}`) })
+    })   
+
+
+    // updating a service from the server
+    app.patch('/updateService/:id', (req, res) => {
+
+        servicesCollection.updateOne({_id: ObjectId(req.params.id)},
+        {
+            $set: {name: req.body.name, description: req.body.description, price: req.body.price}
+        }
+        )
+        .then(result => {
+            // console.log(result);
+            console.log("Data Updated Successfully")
+            res.send(result.modifiedCount > 0)
+        })
+        .catch(err => { console.error(`Failed to update service: ${err}`) })
+    })
+    
+    
+    // deleting a service from server
+    app.delete('/deleteService/:id', (req, res) => {
+        const id = ObjectId(req.params.id);
+        // console.log('select for delete: ', id);
+        servicesCollection.findOneAndDelete({ _id: id })
+            .then(documents => {
+                res.send(!!documents.value)
+            })
+    })
+
+
+    // sending a review to server
     app.post('/addReview', (req, res) => {
         const newReview = req.body;
         console.log(newReview);
@@ -44,6 +107,7 @@ client.connect(err => {
         })
         .catch(err => { console.error(`Failed to insert item: ${err}`) })
     })
+
 
     //end
     if(err) { console.log("connection error: ", err); }
