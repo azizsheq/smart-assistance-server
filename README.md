@@ -2,7 +2,7 @@
 
 ## **Firebase Live Hosting URL** : https://smart-assistance-353ad.web.app/
 
-![project home page screenshot](https://github.com/Porgramming-Hero-web-course/full-stack-client-azizsheq/blob/master/screenshots/homePage.png)
+![project home page screenshot](https://github.com/Porgramming-Hero-web-course/complete-website-server-azizsheq/blob/master/screenshots/homePage.png)
 
 **GitHub Repositories client side Link** https://github.com/Porgramming-Hero-web-course/complete-website-client-azizsheq
 
