@@ -156,6 +156,16 @@ client.connect(err => {
     })
 
 
+    // check admin
+    app.post('/isAdmin', (req,res) => {
+        const email = req.body.email;
+        usersCollection.find({ email: email })
+            .toArray((err, users) => {
+                res.send(users.length > 0);
+            })
+    })
+
+
     //end
     if(err) { console.log("connection error: ", err); }
     // perform actions on the collection object
