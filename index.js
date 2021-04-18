@@ -28,9 +28,26 @@ client.connect(err => {
     // collection for reviews
     const reviewsCollection = client.db("smartAssistanceDB").collection("reviews");
 
+    // collection for orders
+    const ordersCollection = client.db("smartAssistanceDB").collection("orders");
+
+    // collection for users
+    const usersCollection = client.db("smartAssistanceDB").collection("users");
+
     // test data
     // const newData = {"name":"test one"};
-    // reviewsCollection.insertOne(newData)
+    // usersCollection.insertOne(newData)
+    //     .then(result => { console.log(`Successfully inserted item with _id: ${result.insertedId}`)})
+    //     .then(error => { if(error) {console.log(`Failed to insert item: ${error}`)} })
+
+    // test data for review
+    // const newReview = {
+    //     "name":"Robert",
+    //     "email":"robert@gmail.com",
+    //     "reviewText":"Lorem ipsum adipisicing elit dolor corporis saepe sit amet consectetur , distinctio quae rem iure culpa!", 
+    //     "image":"https://i.ibb.co/T0vDPfZ/client-3.jpg"
+    // };
+    // reviewsCollection.insertOne(newReview)
     //     .then(result => { console.log(`Successfully inserted item with _id: ${result.insertedId}`)})
     //     .then(error => { if(error) {console.log(`Failed to insert item: ${error}`)} })
 
@@ -95,6 +112,14 @@ client.connect(err => {
             })
     })
 
+
+    // getting all reviews from server
+    app.get('/getReviews', (req, res) => {
+        reviewsCollection.find()
+            .toArray((err, review) => {
+                res.send(review)
+            })
+    })
 
     // sending a review to server
     app.post('/addReview', (req, res) => {
