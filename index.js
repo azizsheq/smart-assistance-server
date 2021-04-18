@@ -166,6 +166,17 @@ client.connect(err => {
     })
 
 
+    // add admin 
+    // const newAdmin = {
+    //     "name":"programming hero",
+    //     "email":"programminghero001@gmail.com",
+    //     "role":"admin" 
+    // };
+    // usersCollection.insertOne(newAdmin)
+    //     .then(result => { console.log(`Successfully inserted item with _id: ${result.insertedId}`)})
+    //     .then(error => { if(error) {console.log(`Failed to insert item: ${error}`)} })   
+
+
     //end
     if(err) { console.log("connection error: ", err); }
     // perform actions on the collection object
