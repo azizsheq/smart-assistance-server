@@ -166,6 +166,15 @@ client.connect(err => {
     })
 
 
+    // getting all users from server
+    app.get('/getUsers', (req, res) => {
+        usersCollection.find()
+            .toArray((err, users) => {
+                res.send(users)
+            })
+    })
+
+
     // add admin 
     // const newAdmin = {
     //     "name":"programming hero",
