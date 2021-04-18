@@ -134,6 +134,28 @@ client.connect(err => {
     })
 
 
+    // sending a order to server
+    app.post('/addOrder', (req, res) => {
+        const newOrder = req.body;
+        // console.log(newOrder);
+        ordersCollection.insertOne(newOrder)
+        .then(result => {
+            console.log(`Successfully inserted review with _id: ${result.insertedId}`)
+            res.send(result.insertedId > 0)
+        })
+        .catch(err => { console.error(`Failed to insert item: ${err}`) })
+    })
+
+
+    // getting all orders from server
+    app.get('/getOrders', (req, res) => {
+        ordersCollection.find({email: req.query.email})
+            .toArray((err, order) => {
+                res.send(order)
+            })
+    })
+
+
     //end
     if(err) { console.log("connection error: ", err); }
     // perform actions on the collection object
